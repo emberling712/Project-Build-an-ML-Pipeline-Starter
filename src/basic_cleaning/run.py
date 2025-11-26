@@ -47,7 +47,10 @@ def go(args: argparse.Namespace) -> None:
         logger.info("Converting last_review to datetime")
         df["last_review"] = pd.to_datetime(df["last_review"], errors="coerce")
 
-    # (Later in the project you’ll add geographic filtering here)
+    # 2.2. Filter by valid geographic boundaries (NYC area)
+    logger.info("Filtering rows to valid NYC longitude/latitude bounds")
+    idx = df["longitude"].between(-74.25, -73.50) & df["latitude"].between(40.5, 41.2)
+    df = df[idx].copy()
 
     # 3. Save cleaned data locally
     cleaned_filename = "clean_sample.csv"
